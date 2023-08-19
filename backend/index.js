@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('./models/UserModel');
 const cookieParser = require('cookie-parser');
 const User = require('./models/UserModel');
+const UserRouter = require('./routers/UserRouter');
 
 require('dotenv').config();
 
@@ -21,23 +22,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
-const salt = bcrypt.genSaltSync(5);
-
-app.post('/register', async (req, res) => {
-  const { userName, email, password } = req.body;
-  try {
-    const userDoc = await UserModel.create({
-      name: userName,
-      email: email,
-      password: bcrypt.hashSync(password, salt),
-    });
-    const token = jwt.sign({ id: userDoc._id, userName }, 'sshhhhh');
-    userDoc.token = token;
-    res.status(201).send(token).json({ mes: 'successs' });
-  } catch (error) {
-    console.log(error);
-  }
-});
+app.use('/auth', UserRouter);
 
 app.post('/login', async (req, res) => {
   try {
