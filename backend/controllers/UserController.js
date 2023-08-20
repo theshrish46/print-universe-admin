@@ -19,7 +19,7 @@ const register = async (req, res) => {
       password: bcrypt.hashSync(password, 5),
     });
     const token = jwt.sign({ userName, id: user._id }, process.env.JWT_SECRET);
-    res.status(201).send('User cerated' + token);
+    res.status(201).send(userName, email, token);
   } catch (error) {
     console.log('New Error Register Controller ' + error);
   }
@@ -28,13 +28,16 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       res.status(404).send('User doesnot exist');
     }
     if (user && bcrypt.compare(password, user.password)) {
       const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET);
-      res.status(200).send('User Exist ' + token);
+      user.password = undefined;
+      res.status(201).json({ user: user, token: token });
+    } else {
+      console.log('Wrong password');
     }
   } catch (error) {
     console.log('Login Error User Controller ' + error);

@@ -1,10 +1,16 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useLocalStorageState from 'use-local-storage-state';
 
 const page = () => {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
+  const [response, setResponse] = useState([]);
+  const [userInfo, setUserInfo] = useLocalStorageState('user', {
+    defaultValue: [],
+  });
+
   const router = useRouter();
   async function handleLogin(e) {
     e.preventDefault();
@@ -13,8 +19,12 @@ const page = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+    const res = await response.json();
+    console.log(res);
+    setResponse(res);
+    const { user, token } = res;
+    setUserInfo(user);
   }
-
   return (
     <>
       <div className='w-1/2 h-96 mx-auto my-10 flex justify-center items-center'>
