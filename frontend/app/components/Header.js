@@ -1,15 +1,13 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 const Header = () => {
-  const router = useRouter();
-  const { pathname } = router;
+  const pathname = usePathname();
 
   const active = 'bg-white px-2 py-1 rounded-md text-gray-600 font-bold';
   const inactive = 'px-2 py-1';
-  const user = localStorage.getItem('user');
   return (
     <>
       <aside
@@ -27,30 +25,23 @@ const Header = () => {
                 flex flex-col justify-center items-start
                 '
         >
-          <Link
-            href={'/dashboard'}
-            target='_blank'
-            className={pathname.includes('/') ? active : inactive}
-          >
+          <Link href={'/'} className={active}>
             Dashboard
           </Link>
           <Link
             href={'/product'}
-            target='_blank'
             className={pathname.includes('/product') ? active : inactive}
           >
             Products
           </Link>
           <Link
             href={'/order'}
-            target='_blank'
             className={pathname.includes('/order') ? active : inactive}
           >
             Orders
           </Link>
           <Link
             href={'/setting'}
-            target='_blank'
             className={pathname.includes('setting') ? active : inactive}
           >
             Settings

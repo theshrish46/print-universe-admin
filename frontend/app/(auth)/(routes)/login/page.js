@@ -22,7 +22,7 @@ const page = () => {
     const res = await response.json();
     console.log(res);
     setResponse(res);
-    const { user, token } = res;
+    const { user, resEmail, token } = res;
     setUserInfo(user);
   }
   return (
