@@ -35,7 +35,7 @@ const login = async (req, res) => {
     if (user && bcrypt.compare(password, user.password)) {
       const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET);
       user.password = undefined;
-      res.status(201).json({ user: user, token: token });
+      res.status(201).json({ user: user.name, token: token });
     } else {
       console.log('Wrong password');
     }
