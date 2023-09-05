@@ -1,88 +1,73 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
+
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-// Hook form imports
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-toastify'
+import Toast from './../../../components/Toast'
 
-// Shadcn/ui components
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { types } from 'util'
 
 
 const formSchema = z.object({
-    username: z.string()
-        .min(2, { message: 'Username must be atleast 2 characters' })
-        .max(50, { message: 'Username cannot be more than 50 characters' }),
-    password: z.string()
-        .min(5, { message: 'Password must be of atleast 5 characters' })
+    username: z.string().min(2, { message: 'User name must be atleast 2 chars' }).max(25, { message: 'User name cannot be more than 25 chars' }),
+    password: z.string().min(5)
 })
 
-const page = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            username: '',
-            password: ''
-        }
-    })
+type FormValues = z.infer<typeof formSchema>
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+const page = () => {
+
+    const showToast = () => {
+        toast.success('success')
     }
 
-    type Theme = 'light' | 'dark'
-    const [theme, settheme] = useState<Theme>('dark')
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormValues>({
+        resolver: zodResolver(formSchema)
+    })
+
+    const onSubmit = (data: FormValues) => {
+        console.log(data)
+    }
     return (
-        <div className='w-1/4 h-auto px-4 py-8 mx-auto my-8 rounded-3xl backdrop-blur-3xl
-        text-gray-200 bg-gray-900
-        flex justify-center items-center'>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='w-full px-2'>
-                    <FormField
-                        control={form.control}
-                        name="username"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Username" {...field}
-                                        className='focus:outline-none outline-none border-gray-600 border-2'
-                                    />
-                                </FormControl>
-                                <FormDescription>This is your public display name.</FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+        <div className='my-8 px-4 py-6 bg-gray-900 rounded-2xl w-1/4'>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className='
+                px-4 py-4 mx-auto my-4
+                flex flex-col justify-start items-start gap-5'>
 
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <>
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Password" {...field}
-                                            className='focus:outline-none outline-none border-gray-600 border-2'
-                                        />
-                                    </FormControl>
-                                    <FormDescription>Enter a strong Password</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            </>
-                        )}
+                <div className='flex flex-col justify-center items-start gap-3'>
+                    <label
+                        className='text-white'
+                        htmlFor="username">Username</label>
+                    <input type="text" id='username' {...register('username')}
+                        className='px-2 py-1 rounded-md outline-none focus:outline-none w-full'
                     />
-                    <Button variant={'secondary'} type='submit' className='my-6'>
-                        Submit
-                    </Button>
-                </form>
-            </Form>
+                    {errors.username && <p>user name error</p>}
+                </div>
+
+                <div className='flex flex-col justify-center items-start gap-3'>
+                    <label
+                        className='text-white'
+                        htmlFor="password">Password</label>
+                    <input type="password" id='password' {...register('password')}
+                        className='px-2 py-1 rounded-md outline-none focus:outline-none w-full'
+                    />
+                    {errors.password && <p>Password Error</p>}
+                </div>
+
+                <input type="submit"
+                    onClick={showToast}
+                    className='bg-gray-300 text-gray-900 px-3 py-2 my-2 rounded-md' />
+            </form>
         </div>
     )
 }
