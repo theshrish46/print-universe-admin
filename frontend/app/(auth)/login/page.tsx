@@ -1,73 +1,80 @@
-'use client'
-import React from 'react'
+"use client"
+import React from "react"
 
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-
-import { toast } from 'react-toastify'
-import Toast from './../../../components/Toast'
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
 
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const formSchema = z.object({
-    username: z.string().min(2, { message: 'User name must be atleast 2 chars' }).max(25, { message: 'User name cannot be more than 25 chars' }),
-    password: z.string().min(5)
+    username: z.string()
+        .min(2, { message: "Username must be at least 2 characters.", })
+        .max(30, { message: 'User name cannot be more than 30 chars' }),
+    password: z.string()
+        .min(5, { message: 'Password must be 5 chars long' })
 })
 
-type FormValues = z.infer<typeof formSchema>
-
 const page = () => {
-
-    const showToast = () => {
-        toast.success('success')
-    }
-
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm<FormValues>({
-        resolver: zodResolver(formSchema)
+    // 1. Define your form.
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            username: "",
+            password: "",
+        },
     })
 
-    const onSubmit = (data: FormValues) => {
-        console.log(data)
+    // 2. Define a submit handler.
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        console.log(values)
     }
     return (
-        <div className='my-8 px-4 py-6 bg-gray-900 rounded-2xl w-1/4'>
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className='
-                px-4 py-4 mx-auto my-4
-                flex flex-col justify-start items-start gap-5'>
-
-                <div className='flex flex-col justify-center items-start gap-3'>
-                    <label
-                        className='text-white'
-                        htmlFor="username">Username</label>
-                    <input type="text" id='username' {...register('username')}
-                        className='px-2 py-1 rounded-md outline-none focus:outline-none w-full'
+        <div className="bg-slate-200 rounded-xl px-8 py-8 my-5 shadow-2xl shadow-gray-300">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Username</FormLabel>
+                                <FormControl className="border-none">
+                                    <Input placeholder="Username" {...field} className="focus-visible:ring-1 transition-all duration-200 border-none" />
+                                </FormControl>
+                                <FormDescription>
+                                    This is your public display name.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                    {errors.username && <p>user name error</p>}
-                </div>
 
-                <div className='flex flex-col justify-center items-start gap-3'>
-                    <label
-                        className='text-white'
-                        htmlFor="password">Password</label>
-                    <input type="password" id='password' {...register('password')}
-                        className='px-2 py-1 rounded-md outline-none focus:outline-none w-full'
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Password" {...field} className="focus-visible:ring-1 transition-all duration-200 border-none" />
+                                </FormControl>
+                                <FormDescription>
+                                    Secure your account with a strong Password
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                    {errors.password && <p>Password Error</p>}
-                </div>
-
-                <input type="submit"
-                    onClick={showToast}
-                    className='bg-gray-300 text-gray-900 px-3 py-2 my-2 rounded-md' />
-            </form>
+                    <Button type="submit">Submit</Button>
+                </form>
+            </Form>
         </div>
     )
 }

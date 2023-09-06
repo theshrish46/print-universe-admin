@@ -73,4 +73,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  input {
+    @apply outline-none focus:outline-none border-gray-700 focus:border-none
+  }
 }

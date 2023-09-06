@@ -2,7 +2,9 @@ import React from 'react'
 
 const page = () => {
     return (
-        <div>Profile</div>
+        <div className='w-full my-5 mx-auto'>
+            
+        </div>
     )
 }
 

@@ -1,8 +1,10 @@
 'use client'
 import React, { useState } from 'react'
 
-import Modal from './Modal'
+// import Modal from './Modal'
 import Link from 'next/link'
+import { CgProfile } from 'react-icons/cg'
+import { Button } from '../ui/button'
 
 
 
@@ -24,25 +26,18 @@ const Navbar = () => {
                 <button onClick={openModal} className='bg-black text-white px-3 py-2'>
                     Create Store
                 </button>
-                <Modal isOpen={isModalOpen} onClose={closeModal}>
-                    <React.Fragment>
-                        <h4>Create a new Store</h4>
-                        <form className='flex flex-col justify-center items-start'>
-                            <input type="text" />
-                            <input type="text" />
-                            <input type="submit" />
-                        </form>
-                    </React.Fragment>
-                </Modal>
+
             </div>
 
             <ul className='flex justify-around items-center gap-5'>
                 <li>
                     <Link href={'/profile'}>
-                        Profile
+                        <CgProfile size={25} />
                     </Link>
                 </li>
-                <li>logout</li>
+                <li>
+                    <Button variant={'destructive'}>Logout</Button>
+                </li>
             </ul>
         </div>
     )
