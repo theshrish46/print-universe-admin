@@ -5,28 +5,17 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { CgProfile } from 'react-icons/cg'
 import { Button } from '../ui/button'
+import ModalProvider from '../component-providers/ModalProvider'
 
 
 
 const Navbar = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
-
+    const [open, setOpen] = useState<Boolean>(false)
 
     return (
         <div className='flex justify-between items-center'>
             <div>
-                <button onClick={openModal} className='bg-black text-white px-3 py-2'>
-                    Create Store
-                </button>
-
+                <ModalProvider />
             </div>
 
             <ul className='flex justify-around items-center gap-5'>

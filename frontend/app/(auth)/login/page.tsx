@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-const formSchema = z.object({
+const loginformSchema = z.object({
     username: z.string()
         .min(2, { message: "Username must be at least 2 characters.", })
         .max(30, { message: 'User name cannot be more than 30 chars' }),
@@ -20,19 +20,15 @@ const formSchema = z.object({
 })
 
 const page = () => {
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof loginformSchema>>({
+        resolver: zodResolver(loginformSchema),
         defaultValues: {
             username: "",
             password: "",
         },
     })
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+    function onSubmit(values: z.infer<typeof loginformSchema>) {
         console.log(values)
     }
     return (
