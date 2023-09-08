@@ -5,14 +5,14 @@ import React from "react"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-
+import axios from 'axios'
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 const loginformSchema = z.object({
-    username: z.string()
+    useremail: z.string()
         .min(2, { message: "Username must be at least 2 characters.", })
         .max(30, { message: 'User name cannot be more than 30 chars' }),
     password: z.string()
@@ -23,13 +23,21 @@ const page = () => {
     const form = useForm<z.infer<typeof loginformSchema>>({
         resolver: zodResolver(loginformSchema),
         defaultValues: {
-            username: "",
+            useremail: "",
             password: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof loginformSchema>) {
-        console.log(values)
+    const onSubmit = async (data: z.infer<typeof loginformSchema>) => {
+        console.log(data)
+        try {
+            const response = await axios.post('http://localhost:8000/user/login', data)
+            const { token } = response.data
+            const ltk = localStorage.setItem('token', token)
+            console.log('Response from server', response.data)
+        } catch (error) {
+            console.log('Error sending data', error)
+        }
     }
     return (
         <div className="bg-slate-200 rounded-xl px-8 py-8 my-5 shadow-2xl shadow-gray-300">
@@ -37,7 +45,7 @@ const page = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                         control={form.control}
-                        name="username"
+                        name="useremail"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Username</FormLabel>

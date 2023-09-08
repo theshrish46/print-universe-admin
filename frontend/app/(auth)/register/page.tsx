@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import * as z from 'zod'
+import axios from 'axios'
 
 // Hook form imports
 import { useForm } from 'react-hook-form'
@@ -10,7 +11,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { types } from 'util'
 
 
 const formSchema = z.object({
@@ -35,17 +35,25 @@ const page = () => {
         }
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+        console.log(data)
+        try {
+            const response = await axios.post('http://localhost:8000/user/register', data)
+            const { token } = response.data
+            console.log(token)
+            const ltk = localStorage.setItem('token', token)
+            console.log('Response from server', response.data)
+        } catch (error) {
+            console.log('Error', error)
+        }
+
     }
 
     type Theme = 'light' | 'dark'
     const [theme, settheme] = useState<Theme>('dark')
 
     return (
-        <div className='w-1/4 h-auto px-4 py-8 mx-auto my-8 rounded-3xl backdrop-blur-3xl
-        text-gray-200 bg-gray-900
-        flex justify-center items-center'>
+        <div className='bg-slate-200 rounded-xl px-8 py-8 my-5 shadow-2xl shadow-gray-300 w-1/4'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='w-full px-2'>
                     <FormField
@@ -102,7 +110,7 @@ const page = () => {
                             </>
                         )}
                     />
-                    <Button variant={'secondary'} type='submit' className='my-6'>
+                    <Button variant={'default'} type='submit' className='my-6'>
                         Submit
                     </Button>
                 </form>
