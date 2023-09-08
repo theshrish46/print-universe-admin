@@ -7,10 +7,21 @@ import { CgProfile } from 'react-icons/cg'
 import { Button } from '../ui/button'
 import ModalProvider from '../component-providers/ModalProvider'
 
+// State Management
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '@/redux/features/auth/authSlice'
+
 
 
 const Navbar = () => {
     const [open, setOpen] = useState<Boolean>(false)
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+    const handleLogoutClick = () => {
+        dispatch(logout())
+        localStorage.removeItem('token')
+    }
 
     return (
         <div className='flex justify-between items-center'>
@@ -25,7 +36,18 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Button variant={'destructive'}>Logout</Button>
+
+                    {
+                        isAuthenticated ? (
+                            <Button variant={'destructive'} onClick={handleLogoutClick}>Logout</Button>
+                        ) : (
+                            <Button>
+                                <Link href={'/login'}>
+                                    Login
+                                </Link>
+                            </Button>
+                        )
+                    }
                 </li>
             </ul>
         </div>

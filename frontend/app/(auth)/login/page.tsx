@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 
 
 import { useForm } from 'react-hook-form'
@@ -10,6 +10,11 @@ import axios from 'axios'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+
+// State Management
+import { login } from "@/redux/features/auth/authSlice"
+import { useDispatch } from 'react-redux'
+import { useRouter } from "next/navigation"
 
 const loginformSchema = z.object({
     useremail: z.string()
@@ -28,13 +33,20 @@ const page = () => {
         },
     })
 
+    const dispatch = useDispatch()
+    const router = useRouter()
+
     const onSubmit = async (data: z.infer<typeof loginformSchema>) => {
         console.log(data)
         try {
+
             const response = await axios.post('http://localhost:8000/user/login', data)
-            const { token } = response.data
-            const ltk = localStorage.setItem('token', token)
-            console.log('Response from server', response.data)
+            const { token, user } = response.data
+            localStorage.setItem('user', user)
+            localStorage.setItem('token', token)
+            dispatch(login({ token: token, user: user }))
+            router.push('/')
+
         } catch (error) {
             console.log('Error sending data', error)
         }
