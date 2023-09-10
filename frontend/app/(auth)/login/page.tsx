@@ -44,7 +44,7 @@ const page = () => {
             const { token, user } = response.data
             localStorage.setItem('user', user)
             localStorage.setItem('token', token)
-            dispatch(login({ token: token, user: user }))
+            dispatch(login({ token: token }))
             router.push('/')
 
         } catch (error) {

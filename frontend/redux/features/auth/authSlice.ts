@@ -11,13 +11,11 @@ type User = {
 type AuthState = {
     isAuthenticated: boolean;
     token: string | null;
-    user: User | null
 }
 
 const initialState: AuthState = {
     isAuthenticated: false,
-    token: localStorage.getItem('token') || null,
-    user: null
+    token: null,
 }
 
 
@@ -25,15 +23,13 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<{ token: string; user: User }>) => {
+        login: (state, action: PayloadAction<{ token: string }>) => {
             state.isAuthenticated = true;
-            state.token = action.payload.token;
-            state.user = action.payload.user;
+            state.token = action.payload;
         },
         logout: (state) => {
             state.isAuthenticated = false;
             state.token = null;
-            state.user = null;
         }
     }
 })
