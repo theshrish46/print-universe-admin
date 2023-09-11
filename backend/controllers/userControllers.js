@@ -1,19 +1,19 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/User');
+const User = require("../models/User");
 
 const register = async (req, res) => {
   console.log(req.body);
   const { username, useremail, password } = req.body;
   console.log(username, useremail, password);
   if (!(username && useremail && password)) {
-    return res.json({ messege: 'Both the fields are necessary' });
+    return res.json({ messege: "Both the fields are necessary" });
   }
   try {
     const existingUser = await User.findOne({ email: useremail });
     if (existingUser) {
-      return res.send('user already exist');
+      return res.send("user already exist");
     }
 
     const hashedPassword = await bcrypt.hashSync(password, 10);
@@ -28,13 +28,13 @@ const register = async (req, res) => {
     const response = await userDoc.save();
 
     const token = await jwt.sign({ userId: userDoc._id }, process.env.JWT_KEY, {
-      expiresIn: '1h',
+      expiresIn: "1h",
     });
 
     return res.status(201).json({ token: token });
   } catch (error) {
     console.log(error);
-    return res.status(401).send('client error');
+    return res.status(401).send("client error");
   }
 };
 
@@ -43,7 +43,7 @@ const login = async (req, res) => {
   console.log(useremail, password);
 
   if (!(useremail, password)) {
-    return res.status(401).send('all the fields are important');
+    return res.status(401).send("all the fields are important");
   }
 
   try {
@@ -55,18 +55,22 @@ const login = async (req, res) => {
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).send('authentication failed');
+      return res.status(401).send("authentication failed");
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
-      expiresIn: '1h',
+      expiresIn: "1h",
     });
     user.password = null;
 
     return res.status(200).json({ token: token, user: user });
   } catch (error) {
     console.log(error);
-    return res.status(400).send('error occured');
+    return res.status(400).send("error occured");
   }
+};
+
+const profile = async (req, res) => {
+  res.send("ok profile");
 };
 
 module.exports = { register, login };
