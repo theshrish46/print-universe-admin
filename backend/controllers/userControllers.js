@@ -70,7 +70,15 @@ const login = async (req, res) => {
 };
 
 const profile = async (req, res) => {
-  res.send("ok profile");
+  const { username, useremail, password } = req.body;
+  try {
+    const user = await User.findOne({ email: useremail });
+    if (!user) return res.send("No user found");
+    
+  } catch (error) {
+    console.log(error);
+  }
+  res.send("ok");
 };
 
-module.exports = { register, login };
+module.exports = { register, login, profile };

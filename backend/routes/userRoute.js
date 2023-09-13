@@ -10,9 +10,9 @@ router.use(cors());
 router.get("/details", (req, res) => {
   res.send("hi");
 });
+router.get("/profile", profile);
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/profile", profile);
 
 module.exports = router;
