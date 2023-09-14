@@ -23,6 +23,7 @@ const productSchema = z.object({
   productDesc: z.string(),
   productCat: z.string(),
   productSlug: z.string(),
+  images: z.record(z.string()),
 });
 
 type ProductType = z.infer<typeof productSchema>;
@@ -43,9 +44,12 @@ const page = () => {
   };
 
   return (
-    <div className="w-2/3 mx-auto my-10">
+    <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col justify-center items-stretch gap-5"
+        >
           <FormField
             control={form.control}
             name="productname"
@@ -108,6 +112,22 @@ const page = () => {
                   <Input placeholder="slug" {...field} />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="images"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Add Images</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    placeholder="images"
+                    className="border-2 border-black w-32 h-28 flex justify-center items-center"
+                  />
+                </FormControl>
               </FormItem>
             )}
           />

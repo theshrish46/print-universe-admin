@@ -74,7 +74,6 @@ const profile = async (req, res) => {
   try {
     const user = await User.findOne({ email: useremail });
     if (!user) return res.send("No user found");
-    
   } catch (error) {
     console.log(error);
   }
