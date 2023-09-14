@@ -1,10 +1,11 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const cors = require('cors');
-require('dotenv').config();
-const userRoute = require('./routes/userRoute.js');
+const express = require("express");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const cors = require("cors");
+require("dotenv").config();
+const userRoute = require("./routes/userRoute.js");
+const productRoute = require("./routes/productRoute.js");
 
 const PORT = process.env.PORT;
 
@@ -18,12 +19,13 @@ try {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  console.log('successfull');
+  console.log("successfull");
 } catch (error) {
   console.log(error);
 }
 
-app.use('/user', userRoute);
+app.use("/user", userRoute);
+app.use("/product", productRoute);
 
 app.listen(PORT, () => {
   console.log(process.env.PORT);

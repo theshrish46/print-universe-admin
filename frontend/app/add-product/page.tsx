@@ -14,16 +14,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./../../components/ui/input";
 import { Button } from "@/components/ui/button";
+import { InputFile } from "@/components/ui/fileInput";
+
+import axios from "axios";
 
 const productSchema = z.object({
-  productname: z
+  productName: z
     .string()
     .max(25, { message: "Product Name cannot be more than 25 chars" }),
   price: z.string(),
   productDesc: z.string(),
   productCat: z.string(),
   productSlug: z.string(),
-  images: z.record(z.string()),
+  images: z.record(z.string(), { description: "desc" }),
 });
 
 type ProductType = z.infer<typeof productSchema>;
@@ -32,27 +35,50 @@ const page = () => {
   const form = useForm<ProductType>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      productname: "",
+      productName: "",
       price: "",
       productDesc: "",
       productCat: "",
       productSlug: "",
+      images: {},
     },
   });
-  const onSubmit = (values: ProductType) => {
+  const onSubmit = async (values: ProductType) => {
     console.log(values);
+    try {
+      const formData = new FormData();
+      formData.append("productName", values.productName);
+      formData.append("productDesc", values.productDesc);
+      formData.append("price", values.price);
+      formData.append("productCategory", values.productCat);
+      formData.append("productSlug", values.productSlug);
+
+      if (values.images && values.images[0]) {
+        formData.append("images", values.images[0]);
+      }
+
+      const response = await axios.post(
+        "http://localhost:8000/product/create-product",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log("Response ", response.data);
+    } catch (error) {
+      console.log("Error ", error);
+    }
   };
 
   return (
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
       <Form {...form}>
         <form
+          encType="multipart/form-data"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col justify-center items-stretch gap-5"
         >
           <FormField
             control={form.control}
-            name="productname"
+            name="productName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Product Name</FormLabel>
@@ -119,16 +145,7 @@ const page = () => {
             control={form.control}
             name="images"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Add Images</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    placeholder="images"
-                    className="border-2 border-black w-32 h-28 flex justify-center items-center"
-                  />
-                </FormControl>
-              </FormItem>
+              <InputFile />
             )}
           />
           <Button type="submit">Submit</Button>
