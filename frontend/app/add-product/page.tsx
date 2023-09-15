@@ -72,6 +72,8 @@ const page = () => {
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
       <Form {...form}>
         <form
+          action={"/product/create-product"}
+          method="POST"
           encType="multipart/form-data"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col justify-center items-stretch gap-5"
@@ -144,9 +146,7 @@ const page = () => {
           <FormField
             control={form.control}
             name="images"
-            render={({ field }) => (
-              <InputFile />
-            )}
+            render={({ field }) => <InputFile />}
           />
           <Button type="submit">Submit</Button>
         </form>

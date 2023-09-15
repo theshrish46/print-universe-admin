@@ -28,5 +28,5 @@ app.use("/user", userRoute);
 app.use("/product", productRoute);
 
 app.listen(PORT, () => {
-  console.log(process.env.PORT);
+  console.log(`http://localhost:${process.env.PORT}/product/details`);
 });
