@@ -1,49 +1,17 @@
 "use client";
 import React from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "./../../components/ui/input";
-import { Button } from "@/components/ui/button";
-import { InputFile } from "@/components/ui/fileInput";
 
 import axios from "axios";
 
-const productSchema = z.object({
-  productName: z
-    .string()
-    .max(25, { message: "Product Name cannot be more than 25 chars" }),
-  price: z.string(),
-  productDesc: z.string(),
-  productCat: z.string(),
-  productSlug: z.string(),
-  images: z.record(z.string(), { description: "desc" }),
-});
-
-type ProductType = z.infer<typeof productSchema>;
-
 const page = () => {
-  const form = useForm<ProductType>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      productName: "",
-      price: "",
-      productDesc: "",
-      productCat: "",
-      productSlug: "",
-      images: {},
-    },
-  });
-  const onSubmit = async (values: ProductType) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isLoading },
+  } = useForm();
+
+  const onSubmit = async (values) => {
     console.log(values);
     try {
       const formData = new FormData();
@@ -70,87 +38,29 @@ const page = () => {
 
   return (
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
-      <Form {...form}>
-        <form
-          action={"/product/create-product"}
-          method="POST"
-          encType="multipart/form-data"
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-center items-stretch gap-5"
-        >
-          <FormField
-            control={form.control}
-            name="productName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="productname" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="productDesc"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="desc" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input placeholder="price" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="productCat"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input placeholder="category" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="productSlug"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Slug</FormLabel>
-                <FormControl>
-                  <Input placeholder="slug" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="images"
-            render={({ field }) => <InputFile />}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="productname">Product Name</label>
+        <input type="text" id="productname" {...register("productName")} />
+        {errors.productName && <p>Product Name</p>}
+
+        <label htmlFor="productdesc">Product Description</label>
+        <input type="text" id="productdesc" {...register("productDesc")} />
+        {errors.productName && <p>Product Name</p>}
+
+        <label htmlFor="productprice">Product Price</label>
+        <input type="text" id="productprice" {...register("productPrice")} />
+        {errors.productName && <p>Product Name</p>}
+
+        <label htmlFor="productCat">Product Category</label>
+        <input type="text" id="productCat" {...register("productCat")} />
+        {errors.productName && <p>Product Name</p>}
+
+        <label htmlFor="productSlug">Product Slug</label>
+        <input type="text" id="productSlug" {...register("productSlug")} />
+        {errors.productName && <p>Product Name</p>}
+
+        <input type="submit" className="bg-gray-500" />
+      </form>
     </div>
   );
 };

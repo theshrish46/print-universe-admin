@@ -4,8 +4,6 @@ import React, { useState } from "react";
 // import Modal from './Modal'
 import Link from "next/link";
 import { CgProfile } from "react-icons/cg";
-import { Button } from "../ui/button";
-import ModalProvider from "../component-providers/ModalProvider";
 
 // State Management
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +21,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center">
-      <div>
-        <ModalProvider />
-      </div>
+      <div>modal provider</div>
 
       <ul className="flex justify-around items-center gap-5">
         <li>
@@ -38,13 +34,11 @@ const Navbar = () => {
         </li>
         <li>
           {isAuthenticated ? (
-            <Button variant={"destructive"} onClick={handleLogoutClick}>
-              Logout
-            </Button>
+            <button className="danger" onClick={handleLogoutClick}>Logout</button>
           ) : (
-            <Button>
+            <button>
               <Link href={"/login"}>Login</Link>
-            </Button>
+            </button>
           )}
         </li>
       </ul>

@@ -80,4 +80,24 @@
   label {
     @apply text-gray-700 font-semibold;
   }
+
+  :any-link {
+    @apply font-normal text-lg;
+  }
+}
+
+form {
+  @apply flex flex-col justify-center items-stretch gap-3;
+}
+
+input {
+  @apply rounded-md px-2 py-2 text-lg;
+}
+
+label {
+  @apply text-base;
+}
+
+.danger {
+  @apply px-3 py-2 bg-red-500 rounded-md text-white text-base;
 }

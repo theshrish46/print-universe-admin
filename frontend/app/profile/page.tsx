@@ -18,29 +18,18 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
-const profileSchema = z.object({
-  username: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-});
-
-type ProfileType = z.infer<typeof profileSchema>;
+import { error } from "console";
 
 const page = () => {
-  
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { isLoading, errors },
+  } = useForm();
 
-  function onSubmit(values: z.infer<typeof profileSchema>) {
+  function onSubmit(values) {
     console.log(values);
   }
 
@@ -54,62 +43,40 @@ const page = () => {
         "
     >
       <div>
-        <Button onClick={navigateRouter} className="my-4 self-start">
+        <button onClick={navigateRouter} className="my-4 self-start">
           Back
-        </Button>
+        </button>
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex justify-start items-stretch flex-col gap-5"
-        >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>UserName</FormLabel>
-                <FormControl>
-                  <Input type="text" className="border-2 border-gray-400" />
-                </FormControl>
-                <FormDescription>Update your name</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="email" className="border-2 border-gray-400" />
-                </FormControl>
-                <FormDescription>Update your email</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex justify-start items-stretch flex-col gap-5"
+      >
+        <label htmlFor="username">User Name</label>
+        <input
+          type="text"
+          id="username"
+          {...register("username", { required: true })}
+        />
+        {errors.username && <p>User name required</p>}
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input className="border-2 border-gray-400" />
-                </FormControl>
-                <FormDescription>Update your password</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <label htmlFor="email">User email</label>
+        <input
+          type="email"
+          id="email"
+          {...register("useremail", { required: true })}
+        />
+        {errors.useremail && <p>Email required</p>}
 
-          <Button>Submit</Button>
-        </form>
-      </Form>
+        <label htmlFor="password">User Password</label>
+        <input
+          type="password"
+          id="password"
+          {...register("password", { required: true })}
+        />
+        {errors.password && <p>Password required</p>}
+
+        <input type="submit" />
+      </form>
     </div>
   );
 };

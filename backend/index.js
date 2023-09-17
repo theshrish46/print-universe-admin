@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 require("dotenv").config();
 const userRoute = require("./routes/userRoute.js");
-const productRoute = require("./routes/productRoute.js");
+// const productRoute = require("./routes/productRoute.js");
 
 const PORT = process.env.PORT;
 
@@ -25,7 +25,7 @@ try {
 }
 
 app.use("/user", userRoute);
-app.use("/product", productRoute);
+// app.use("/product", productRoute);
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${process.env.PORT}/product/details`);
