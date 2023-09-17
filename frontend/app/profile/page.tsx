@@ -39,11 +39,11 @@ const page = () => {
   return (
     <div
       className="w-5/6 h-auto mx-auto sm:w-4/6 md:w-3/6 lg:w-2/6
-            px-6 py-6 border-2 border-gray-100 shadow-xl rounded-lg
+            px-6 py-6 shadow-xl rounded-lg bg-gray-50
         "
     >
       <div>
-        <button onClick={navigateRouter} className="my-4 self-start">
+        <button onClick={navigateRouter} className="ok my-4">
           Back
         </button>
       </div>
@@ -75,7 +75,7 @@ const page = () => {
         />
         {errors.password && <p>Password required</p>}
 
-        <input type="submit" />
+        <input type="submit" className="ok" />
       </form>
     </div>
   );

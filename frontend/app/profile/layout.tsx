@@ -1,8 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@/components/ui/button'
-
 
 type TProp = {
     children: React.ReactNode
@@ -11,7 +9,7 @@ type TProp = {
 
 const layout = ({ children }: TProp) => {
     return (
-        <div className='bg-gray-100 h-screen w-full
+        <div className='bg-white h-screen w-full
             flex justify-center items-center flex-col
         '>
             {children}

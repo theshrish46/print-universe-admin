@@ -21,12 +21,12 @@ const page = () => {
       formData.append("productCategory", values.productCat);
       formData.append("productSlug", values.productSlug);
 
-      if (values.images && values.images[0]) {
-        formData.append("images", values.images[0]);
+      if (values.image && values.image[0]) {
+        formData.append("images", values.image[0]);
       }
 
       const response = await axios.post(
-        "http://localhost:8000/product/create-product",
+        "http://localhost:8000/product",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -38,7 +38,13 @@ const page = () => {
 
   return (
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        method="POST"
+        action={"/product/create-product"}
+        encType="multipart/form-data"
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-center items-stretch gap-2"
+      >
         <label htmlFor="productname">Product Name</label>
         <input type="text" id="productname" {...register("productName")} />
         {errors.productName && <p>Product Name</p>}
@@ -59,7 +65,15 @@ const page = () => {
         <input type="text" id="productSlug" {...register("productSlug")} />
         {errors.productName && <p>Product Name</p>}
 
-        <input type="submit" className="bg-gray-500" />
+        <label htmlFor="image">Image</label>
+        <input
+          type="file"
+          name="image"
+          id="image"
+          className="bg-white self-start text-sm"
+        />
+
+        <input type="submit" className="ok" />
       </form>
     </div>
   );
