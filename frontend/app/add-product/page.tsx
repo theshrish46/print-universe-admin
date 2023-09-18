@@ -11,19 +11,16 @@ const page = () => {
     formState: { errors, isLoading },
   } = useForm();
 
-  const onSubmit = async (values) => {
-    console.log(values);
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
       const formData = new FormData();
-      formData.append("productName", values.productName);
-      formData.append("productDesc", values.productDesc);
-      formData.append("price", values.price);
-      formData.append("productCategory", values.productCat);
-      formData.append("productSlug", values.productSlug);
-
-      if (values.image && values.image[0]) {
-        formData.append("images", values.image[0]);
-      }
+      formData.append("productName", data.productName);
+      formData.append("productDesc", data.productDesc);
+      formData.append("price", data.price);
+      formData.append("productCategory", data.productCat);
+      formData.append("productSlug", data.productSlug);
+      formData.append("image", data.image[0]);
 
       const response = await axios.post(
         "http://localhost:8000/product",
@@ -40,7 +37,7 @@ const page = () => {
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
       <form
         method="POST"
-        action={"/product/create-product"}
+        action={"/product"}
         encType="multipart/form-data"
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center items-stretch gap-2"
@@ -68,8 +65,9 @@ const page = () => {
         <label htmlFor="image">Image</label>
         <input
           type="file"
-          name="image"
+          // name="image"
           id="image"
+          {...register("image")}
           className="bg-white self-start text-sm"
         />
 
