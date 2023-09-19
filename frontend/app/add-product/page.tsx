@@ -65,11 +65,11 @@ const page = () => {
         <label htmlFor="image">Image</label>
         <input
           type="file"
-          // name="image"
           id="image"
           {...register("image")}
           className="bg-white self-start text-sm"
         />
+        {errors.image && <p>Image necessary</p>}
 
         <input type="submit" className="ok" />
       </form>
