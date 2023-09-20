@@ -34,7 +34,9 @@ const Navbar = () => {
         </li>
         <li>
           {isAuthenticated ? (
-            <button className="danger" onClick={handleLogoutClick}>Logout</button>
+            <button className="danger" onClick={handleLogoutClick}>
+              Logout
+            </button>
           ) : (
             <button>
               <Link href={"/login"}>Login</Link>

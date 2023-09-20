@@ -1,21 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { error } from "console";
@@ -29,8 +14,8 @@ const page = () => {
     formState: { isLoading, errors },
   } = useForm();
 
-  function onSubmit(values) {
-    console.log(values);
+  function onSubmit(data: any) {
+    console.log(data);
   }
 
   function navigateRouter() {
@@ -75,7 +60,7 @@ const page = () => {
         />
         {errors.password && <p>Password required</p>}
 
-        <input type="submit" className="ok" />
+        <input type="submit" className="ok" placeholder="submit" />
       </form>
     </div>
   );

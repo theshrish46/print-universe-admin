@@ -30,7 +30,7 @@ const page = () => {
       formData.append("image", data.image[0]);
 
       const response = await axios.post(
-        "http://localhost:8000/product",
+        "http://localhost:8000/product/create-product",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -44,7 +44,7 @@ const page = () => {
     <div className="w-2/3 mx-auto my-10 rounded-lg px-6 py-4 shadow-xl">
       <form
         method="POST"
-        action={"/product"}
+        action={"/product/create-product"}
         encType="multipart/form-data"
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center items-stretch gap-2"
