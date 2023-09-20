@@ -39,7 +39,10 @@ const page = () => {
   };
   return (
     <div className="bg-slate-200 rounded-xl px-8 py-8 my-5 shadow-2xl shadow-gray-300">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-5 justify-center items-stretch"
+      >
         <label htmlFor="email">Email</label>
         <input {...register("useremail")} type="email" id="email" />
         {errors.email && <p>Email required</p>}

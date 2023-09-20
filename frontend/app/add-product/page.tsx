@@ -11,7 +11,14 @@ const page = () => {
     formState: { errors, isLoading },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: {
+    productName: string | Blob;
+    productDesc: string | Blob;
+    price: string | Blob;
+    productCat: string | Blob;
+    productSlug: string | Blob;
+    image: (string | Blob)[];
+  }) => {
     console.log(data);
     try {
       const formData = new FormData();
@@ -44,23 +51,23 @@ const page = () => {
       >
         <label htmlFor="productname">Product Name</label>
         <input type="text" id="productname" {...register("productName")} />
-        {errors.productName && <p>Product Name</p>}
+        {errors.productName && <p>Please enter a product name</p>}
 
         <label htmlFor="productdesc">Product Description</label>
         <input type="text" id="productdesc" {...register("productDesc")} />
-        {errors.productName && <p>Product Name</p>}
+        {errors.productName && <p>Please enter a product description</p>}
 
         <label htmlFor="productprice">Product Price</label>
         <input type="text" id="productprice" {...register("productPrice")} />
-        {errors.productName && <p>Product Name</p>}
+        {errors.productName && <p>Please enter a product price</p>}
 
         <label htmlFor="productCat">Product Category</label>
         <input type="text" id="productCat" {...register("productCat")} />
-        {errors.productName && <p>Product Name</p>}
+        {errors.productName && <p>Please enter a product category name</p>}
 
         <label htmlFor="productSlug">Product Slug</label>
         <input type="text" id="productSlug" {...register("productSlug")} />
-        {errors.productName && <p>Product Name</p>}
+        {errors.productName && <p>Please enter a product slug</p>}
 
         <label htmlFor="image">Image</label>
         <input
@@ -69,7 +76,7 @@ const page = () => {
           {...register("image")}
           className="bg-white self-start text-sm"
         />
-        {errors.image && <p>Image necessary</p>}
+        {errors.image && <p>Please Upload the image</p>}
 
         <input type="submit" className="ok" />
       </form>
