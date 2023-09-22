@@ -3,13 +3,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors, isLoading },
   } = useForm();
+
+  const handleClick = () => {
+    router.push("/");
+  };
 
   const onSubmit = async (data: {
     productName: string | Blob;
@@ -34,6 +40,7 @@ const page = () => {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      const { url } = response.data;
       console.log("Response ", response.data);
     } catch (error) {
       console.log("Error ", error);
@@ -78,7 +85,11 @@ const page = () => {
         />
         {errors.image && <p>Please Upload the image</p>}
 
-        <input type="submit" className="ok" />
+        <input
+          onClick={handleClick}
+          type="submit"
+          className={`ok ${isLoading ? "bg-green-300" : "bg-blue-900"}`}
+        />
       </form>
     </div>
   );

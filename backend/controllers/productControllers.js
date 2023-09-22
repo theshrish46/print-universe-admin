@@ -10,18 +10,39 @@ cloudinary.config({
 });
 
 const createProduct = async (req, res) => {
+  const { productName, productDesc, price, productCategory, productSlug } =
+    req.body;
+
+  const parsePrice = (priceStr) => {
+    const numericPrice = parseFloat(priceStr);
+    return isNaN(numericPrice) ? null : numericPrice;
+  };
+
+  const numericPrice = parsePrice(price);
+  if (!(productName, productDesc, price, productCategory, productSlug)) {
+    return res.send("invalid request");
+  }
   if (!req.file) {
     return res.status(401).json({ msg: "Please upload an image file." });
   }
   cloudinary.uploader.upload(
     req.file.path,
     { folder: "/test-folder/images-test-one/" },
-    (error, result) => {
+    async (error, result) => {
       if (error) {
         console.log("-------------", error);
       }
       console.log(result);
-      return res.json({ url: result.url });
+      const productDoc = await Product.create({
+        productName,
+        productDescription: productDesc,
+        price: numericPrice,
+        productCategory,
+        productSlug,
+        images: result.secure_url,
+      });
+      await productDoc.save();
+      return res.json({ product: productDoc });
     }
   );
 };
