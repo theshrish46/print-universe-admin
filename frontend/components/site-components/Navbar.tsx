@@ -3,7 +3,8 @@ import React, { useState } from "react";
 
 // import Modal from './Modal'
 import Link from "next/link";
-import { CgProfile } from "react-icons/cg";
+import { CgAdd, CgLogOut, CgProductHunt, CgProfile } from "react-icons/cg";
+import { BsBoxSeam } from "react-icons/bs";
 
 // State Management
 import { useDispatch, useSelector } from "react-redux";
@@ -20,21 +21,45 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center">
-      <div>modal provider</div>
+    <div className="flex flex-col justify-start items-center h-screen w-full gap-10">
+      <div className="my-4 text-xl">modal provider</div>
 
-      <ul className="flex justify-around items-center gap-5">
+      <ul className="flex flex-col justify-around items-start gap-5">
         <li>
-          <Link href={"/add-product"}>Add Product</Link>
+          <Link
+            href={"/add-product"}
+            className="flex gap-3 justify-center items-center"
+          >
+            <CgAdd size={23} />
+            Add Product
+          </Link>
         </li>
         <li>
-          <Link href={"/profile"}>
+          <Link
+            href={"/profile"}
+            className="flex gap-3 justify-center items-center"
+          >
             <CgProfile size={25} />
+            Profile
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href={"/products"}
+            className="flex gap-3 justify-center items-center"
+          >
+            <BsBoxSeam size={25} />
+            Products
           </Link>
         </li>
         <li>
           {isAuthenticated ? (
-            <button className="danger" onClick={handleLogoutClick}>
+            <button
+              className="danger flex justify-center items-center gap-3"
+              onClick={handleLogoutClick}
+            >
+              <CgLogOut size={23} />
               Logout
             </button>
           ) : (

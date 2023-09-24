@@ -78,12 +78,21 @@
     @apply font-normal text-lg;
   }
 
+  a {
+    @apply hover:-translate-y-1 duration-700;
+  }
+
   input {
     @apply rounded-md px-2 py-2 text-lg outline-none border-2 border-gray-300 focus:border-gray-400;
   }
 
   label {
     @apply text-sm font-medium;
+  }
+  table,
+  th,
+  td {
+    @apply border-2 border-gray-500 px-2 py-2;
   }
 }
 

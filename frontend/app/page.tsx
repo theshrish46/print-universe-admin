@@ -20,7 +20,7 @@ export default function Home() {
       {console.log(isAuthenticated)}
       {isAuthenticated ? (
         <>
-          <header className="w-11/12 mx-auto my-4">
+          <header className="w-48 h-screen mx-2 shadow-md">
             <Navbar />
           </header>
         </>

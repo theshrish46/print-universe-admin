@@ -13,12 +13,15 @@ const createProduct = async (req, res) => {
   const { productName, productDesc, price, productCategory, productSlug } =
     req.body;
 
-  const parsePrice = (priceStr) => {
-    const numericPrice = parseFloat(priceStr);
-    return isNaN(numericPrice) ? null : numericPrice;
-  };
+  // const parsePrice = (priceStr) => {
+  //   const numericPrice = parseFloat(priceStr);
+  //   return isNaN(numericPrice) ? null : numericPrice;
+  // };
 
-  const numericPrice = parsePrice(price);
+  const numericPrice = parseFloat(price);
+  if (isNaN(numericPrice)) {
+    return res.send("is a nan");
+  }
   if (!(productName, productDesc, price, productCategory, productSlug)) {
     return res.send("invalid request");
   }

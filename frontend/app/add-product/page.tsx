@@ -30,7 +30,7 @@ const page = () => {
       const formData = new FormData();
       formData.append("productName", data.productName);
       formData.append("productDesc", data.productDesc);
-      formData.append("price", data.price);
+      formData.append("price", parseFloat(data.price));
       formData.append("productCategory", data.productCat);
       formData.append("productSlug", data.productSlug);
       formData.append("image", data.image[0]);
@@ -65,7 +65,7 @@ const page = () => {
         {errors.productName && <p>Please enter a product description</p>}
 
         <label htmlFor="productprice">Product Price</label>
-        <input type="text" id="productprice" {...register("productPrice")} />
+        <input type="number" id="productprice" {...register("productPrice")} />
         {errors.productName && <p>Please enter a product price</p>}
 
         <label htmlFor="productCat">Product Category</label>
